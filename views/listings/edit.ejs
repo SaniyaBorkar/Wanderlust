@@ -1,5 +1,18 @@
 <% layout("/layouts/boilerplate") -%>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if the 'listingUpdated' flag is set in local storage
+        const listingUpdated = localStorage.getItem('home');
 
+        if (listingUpdated) {
+            // Remove the flag from local storage
+            localStorage.removeItem('listingUpdated');
+
+            // Redirect to the main listings page
+            window.location.href = '/listings';
+        }
+    });
+</script>
 <body>
     <div class="row mt-3">
         <div class="col-8 offset-2">

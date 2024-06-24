@@ -1,10 +1,39 @@
 <% layout("/layouts/boilerplate") -%>
-<script>
+<!-- <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
     const listing = <%- JSON.stringify(listing) %>;
     
     
-</script>
+</script> -->
+
+<script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing = <%- JSON.stringify(listing) %>;
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if the URL contains the 'updated' query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const isUpdated = urlParams.get('updated');
+      console.log("printing updated", isUpdated)
+  
+      if (isUpdated) {
+        // Set a flag in local storage to indicate the listing was updated
+        localStorage.setItem('listingUpdated', 'true');
+  
+        // Remove the 'updated' query parameter from the URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+  
+      // Check if the 'listingUpdated' flag is set in local storage
+      const listingUpdated = localStorage.getItem('listingUpdated');
+      if (listingUpdated) {
+        localStorage.removeItem('listingUpdated');
+        localStorage.setItem('home','true');
+        const item = localStorage.getItem('home');
+      }
+    });
+  </script>
+  
 <body>
     <div class="row">
         <div class="col-8 offset-3 m-3t">
