@@ -74,44 +74,44 @@ module.exports.renderEditForm = async (req,res)=>{
     res.render("listings/edit.ejs",{listing, originalImageUrl});
 }
 
-// module.exports.updateListing = async (req, res, next) => {
-//     let {id} = req.params;
-//     let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+module.exports.updateListing = async (req, res, next) => {
+    let {id} = req.params;
+    let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
 
 
-//     if(typeof req.file !== "undefined"){
-//         let url = req.file.path;
-//         let filename = req.file.filename;
-//         listing.image = { url, filename };
-//         await listing.save();
-//     }
-    
-
-//     console.log(listing);
-//     req.flash("success", "Listing Updated!");
-//     res.redirect(`/listings/${id}`);
-//     }
-
-module.exports.updateListing = async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    if (typeof req.file !== "undefined") {
+    if(typeof req.file !== "undefined"){
         let url = req.file.path;
         let filename = req.file.filename;
         listing.image = { url, filename };
+        await listing.save();
     }
-    let updatedListing = await listing.save();
-    updateListingInDatabase(id, updatedListing)
-        .then(() => {
-            // Redirect to the show page after successful update
-            req.flash("success", "Listing updated!")
-            res.redirect(303, `/listings/${id}?updated=true`);
-        })
-        .catch(err => {
-            console.error('Error updating listing:', err);
-            res.status(500).send('Internal Server Error');
-        });
-};
+    
+
+    console.log(listing);
+    req.flash("success", "Listing Updated!");
+    res.redirect(`/listings/${id}`);
+    }
+
+// module.exports.updateListing = async (req, res) => {
+//     let { id } = req.params;
+//     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+//     if (typeof req.file !== "undefined") {
+//         let url = req.file.path;
+//         let filename = req.file.filename;
+//         listing.image = { url, filename };
+//     }
+//     let updatedListing = await listing.save();
+//     updateListingInDatabase(id, updatedListing)
+//         .then(() => {
+//             // Redirect to the show page after successful update
+//             req.flash("success", "Listing updated!")
+//             res.redirect(303, `/listings/${id}?updated=true`);
+//         })
+//         .catch(err => {
+//             console.error('Error updating listing:', err);
+//             res.status(500).send('Internal Server Error');
+//         });
+// };
 
 
 
